@@ -9,12 +9,18 @@ export class TokenLimits {
     if (model === 'gpt-4-32k') {
       this.maxTokens = 32600
       this.responseTokens = 4000
-    } else if (model === 'gpt-3.5-turbo-16k') {
+    } else if (model === 'gpt-3.5-turbo-0125') {
       this.maxTokens = 16300
       this.responseTokens = 3000
     } else if (model === 'gpt-4') {
       this.maxTokens = 8000
       this.responseTokens = 2000
+    } else if (model === 'gpt-4-turbo') {
+      this.maxTokens = 128000
+      this.responseTokens = 2000
+    } else if (model === 'gpt-4o') {
+      this.maxTokens = 128000
+      this.responseTokens = 4000
     } else {
       this.maxTokens = 4000
       this.responseTokens = 1000
