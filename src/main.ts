@@ -80,7 +80,9 @@ async function run(): Promise<void> {
     ) {
       await handleReviewComment(heavyBot, options, prompts)
     } else {
-      warning('Skipped: this action only works on push events or pull_request')
+      warning(
+        `Skipped: this action only works on push events or pull_request ${process.env.GITHUB_EVENT_NAME}`
+      )
     }
   } catch (e: any) {
     if (e instanceof Error) {
