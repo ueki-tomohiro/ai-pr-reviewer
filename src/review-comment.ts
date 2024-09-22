@@ -129,7 +129,14 @@ export const handleReviewComment = async (
       }
 
       // get tokens so far
-      let tokens = getTokenCount(prompts.renderComment(inputs))
+      let tokens = getTokenCount(
+        prompts.renderComment(
+          inputs,
+          options.openaiHeavyModel === 'o1-mini'
+            ? options.systemMessage
+            : undefined
+        )
+      )
 
       if (tokens > options.heavyTokenLimits.requestTokens) {
         await commenter.reviewCommentReply(
@@ -172,7 +179,15 @@ export const handleReviewComment = async (
         }
       }
 
-      const [reply] = await heavyBot.chat(prompts.renderComment(inputs), {})
+      const [reply] = await heavyBot.chat(
+        prompts.renderComment(
+          inputs,
+          options.openaiHeavyModel === 'o1-mini'
+            ? options.systemMessage
+            : undefined
+        ),
+        {}
+      )
 
       await commenter.reviewCommentReply(pullNumber, topLevelComment, reply)
     }

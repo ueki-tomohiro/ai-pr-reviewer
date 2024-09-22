@@ -272,8 +272,10 @@ $comment
     return inputs.render(prompt)
   }
 
-  renderComment(inputs: Inputs): string {
-    return inputs.render(this.comment)
+  renderComment(inputs: Inputs, systemMessage?: string): string {
+    return inputs.render(
+      systemMessage ? `${systemMessage}\n\n${this.comment}` : this.comment
+    )
   }
 
   renderReviewFileDiff(inputs: Inputs): string {

@@ -309,7 +309,8 @@ ${
   const doSummary = async (
     filename: string,
     fileContent: string,
-    fileDiff: string
+    fileDiff: string,
+    systemMessage?: string
   ): Promise<[string, string, boolean] | null> => {
     info(`summarize: ${filename}`)
     const ins = inputs.clone()
@@ -337,7 +338,12 @@ ${
 
     // summarize content
     try {
-      const [summarizeResp] = await lightBot.chat(summarizePrompt, {})
+      const [summarizeResp] = await lightBot.chat(
+        systemMessage
+          ? `${systemMessage}\n\n${summarizePrompt}`
+          : summarizePrompt,
+        {}
+      )
 
       if (summarizeResp === '') {
         info('summarize: nothing obtained from openai')
@@ -376,7 +382,15 @@ ${
     if (options.maxFiles <= 0 || summaryPromises.length < options.maxFiles) {
       summaryPromises.push(
         openaiConcurrencyLimit(
-          async () => await doSummary(filename, fileContent, fileDiff)
+          async () =>
+            await doSummary(
+              filename,
+              fileContent,
+              fileDiff,
+              options?.openaiLightModel === 'o1-mini'
+                ? options.systemMessage
+                : undefined
+            )
         )
       )
     } else {
